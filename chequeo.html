@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Vigilar mis síntomas</title>
-<link rel="stylesheet" href="./css/chequeo.css">
+    <meta charset="UTF-8">
+    <title>Vigilar mis síntomas</title>
+    <link rel="stylesheet" href="./css/chequeo.css">
 </head>
 <body>
     <div class="container">
         <h1>Vigilar mis síntomas</h1>
         <div class="search-box">
-            <input type="text" placeholder="Buscar por ejemplo, dolor de cabeza">
+            <input type="text" placeholder="Buscar por ejemplo, dolor de cabeza" id="search-input" oninput="filterSymptoms()">
             <button class="search-button">🔍</button>
+            <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
         </div>
-        <div class="info-box">
+        
+        <div class="info-box" id="info-box">
             Por favor, intente agregar más síntomas.
         </div>
-        <img src="human-model.png" alt="Modelo humano" class="human-model">
+        
+        <!-- Selección por parte del cuerpo -->
+        <div class="symptoms-select" id="symptoms-select">
+            <h2>Selecciona una parte del cuerpo:</h2>
+            <!-- Los selects se añadirán aquí dinámicamente -->
+        </div>
+
         <div class="navigation">
-            <button class="rotate-button">Rotar modelo</button>
-            <button class="next-button">Siguiente</button>
             <button class="back-button">Atrás</button>
+            <button class="next-button">Siguiente</button>
         </div>
     </div>
-    <script src="./js/chequeo.js"></script>
+
+    <script src="./js/sintomas.js"></script>
 </body>
 </html>
