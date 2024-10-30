@@ -7,7 +7,6 @@ import Tree
 app = Flask(__name__)
 CORS(app)
 
-#Informacion de la bd
 db_config = {
     'host': '127.0.0.1',
     'user': 'root',
@@ -17,23 +16,6 @@ db_config = {
 
 def connect_db():
     return mysql.connector.connect(**db_config)
-
-#Obtener todas las enfermedades y su informacion
-@app.route('/diseases', methods=['GET'])
-def read_diseases():
-    try:
-        connection = connect_db()
-        cursor = connection.cursor(dictionary=True)
-        query = 'SELECT * FROM enfermedades'
-
-        cursor.execute(query)
-        records = cursor.fetchall()
-
-        cursor.close()
-        connection.close()
-        return jsonify(records), 200
-    except mysql.connector.Error as err:
-        return jsonify({"error": str(err)}), 500
 
 @app.route('/symptoms', methods=['GET'])
 def read_syntoms():
@@ -51,27 +33,6 @@ def read_syntoms():
     except mysql.connector.Error as err:
         return jsonify({"error": str(err)}), 500
 
-#Obtener todas las medicinas y su informacion
-@app.route('/medicine')
-def read_medicine():
-    try:
-        connection = connect_db()
-        cursor = connection.cursor(dictionary=True)
-        query = 'SELECT * FROM medicinas'
-
-        cursor.execute(query)
-        records = cursor.fetchall()
-
-        cursor.close()
-        connection.close()
-        return jsonify(records), 200
-    except mysql.connector.Error as err:
-        return jsonify({"error": str(err)}), 500
-
-#@app.route('/prediction', methods=['GET'])
-#def show_prediction():
-#    return Tree.prediccion([])
-
 @app.route('/prediction', methods=['POST'])
 def show_prediction():
     try:
@@ -85,6 +46,36 @@ def show_prediction():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-#Iniciar servidor
+
+@app.route('/medicine', methods=['POST'])
+def show_medicament():
+    try:
+        predicted_disease = request.json.get('predicted_disease')
+        print("Enfermedad predicha:", predicted_disease)
+
+        connection = connect_db()
+        cursor = connection.cursor(dictionary=True)
+        query = '''
+            SELECT medicinas_enfermedades.id_medicamento, medicinas.nombre, medicinas.stock
+            FROM medicinas_enfermedades
+            JOIN medicinas ON medicinas_enfermedades.id_medicamento = medicinas.id
+            JOIN enfermedades ON medicinas_enfermedades.id_enfermedad = enfermedades.id
+            WHERE enfermedades.nombre = %s
+        '''
+        cursor.execute(query, (predicted_disease,))
+        records = cursor.fetchall()
+
+        cursor.close()
+        connection.close()
+
+        print("Lista de medicamentos:", records)
+
+        return jsonify(records), 200
+
+    except mysql.connector.Error as err:
+        return jsonify({"error": str(err)}), 500
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000)
+    app.run(host='0.0.0.0', port=5000)
