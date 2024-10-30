@@ -86,17 +86,15 @@ function addDisease(selectElement) {
     }
 }
 
-// Filtrado de síntomas para autocompletar
 function filterSymptoms() {
     const input = document.getElementById('search-input');
     const filter = input.value.toLowerCase();
     const suggestionsContainer = document.getElementById('autocomplete-suggestions');
 
-    // Limpiar sugerencias anteriores
     suggestionsContainer.innerHTML = '';
 
     if (filter.length === 0) {
-        return; // Si no hay entrada, no mostrar sugerencias
+        return;
     }
 
     const filteredSymptoms = symptoms.filter(syntom => 
@@ -107,9 +105,9 @@ function filterSymptoms() {
         const suggestionItem = document.createElement('div');
         suggestionItem.textContent = syntom.nombre;
         suggestionItem.onclick = function () {
-            selectSymptom(syntom); // Función para manejar la selección
-            input.value = ''; // Limpiar el campo de búsqueda
-            suggestionsContainer.innerHTML = ''; // Limpiar las sugerencias
+            selectSymptom(syntom);
+            input.value = '';
+            suggestionsContainer.innerHTML = '';
         };
         suggestionsContainer.appendChild(suggestionItem);
     });
@@ -119,16 +117,11 @@ function selectSymptom(syntom) {
     const selectElement = document.getElementById(syntom.parte_del_cuerpo.replace(/\s+/g, '-').toLowerCase());
     const option = Array.from(selectElement.options).find(opt => opt.textContent === syntom.nombre);
     if (option) {
-        option.selected = true; // Seleccionar el síntoma en el selector
-        addDisease(selectElement); // Llama a la función para manejar la selección
+        option.selected = true;
+        addDisease(selectElement);
     }
 }
 
-// Cambia la función llamada al cargar la página
-window.onload = loadSyntom;
-
-
-// Función para enviar symptomsList al servidor Flask
 async function sendSymptomsList() {
     try {
         const response = await fetch('http://127.0.0.1:5000/prediction', {
@@ -136,7 +129,7 @@ async function sendSymptomsList() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(symptomsList), // Enviar la lista de síntomas seleccionados
+            body: JSON.stringify(symptomsList),
         });
 
         if (!response.ok) {
@@ -145,7 +138,31 @@ async function sendSymptomsList() {
 
         const result = await response.json();
         console.log('Respuesta del servidor:', result);
-        alert('Predicción recibida: ' + result.prediction);
+
+        localStorage.setItem('predictedDisease', JSON.stringify(result.prediction));
+
+        const medicineResponse = await fetch('http://127.0.0.1:5000/medicine', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ predicted_disease: result.prediction }),
+        });
+
+        if (!medicineResponse.ok) {
+            throw new Error('Error al obtener la lista de medicamentos');
+        }
+
+        const medicines = await medicineResponse.json();
+        console.log('Medicamentos obtenidos:', medicines);
+
+        localStorage.setItem('medicines', JSON.stringify(medicines));
+
+        medicines.forEach(medicine => {
+            console.log(`Nombre: ${medicine.nombre}, Stock: ${medicine.stock}`);
+        });
+
+        window.location.href = "../diagnostico.html";
 
     } catch (error) {
         console.error('Error al enviar la lista de síntomas:', error);
@@ -153,7 +170,8 @@ async function sendSymptomsList() {
     }
 }
 
-// Asignar la función al botón "Siguiente"
 document.querySelector('.next-button').onclick = function() {
     sendSymptomsList();
 };
+
+window.onload = loadSyntom;
