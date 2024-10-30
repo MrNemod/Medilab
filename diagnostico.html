@@ -24,11 +24,9 @@
             diseaseTitle.textContent = `Enfermedad: ${predictedDisease}`;
             diagnosisResult.appendChild(diseaseTitle);
 
-            // Crear el contenedor para los medicamentos
             const medicinesContainer = document.createElement('div');
             medicinesContainer.classList.add('medicines-container');
 
-            // Mostrar cada medicamento
             medicines.forEach(medicine => {
                 const medicineItem = document.createElement('p');
                 medicineItem.textContent = `Nombre: ${medicine.nombre}, Stock: ${medicine.stock}`;
@@ -37,7 +35,6 @@
 
             diagnosisResult.appendChild(medicinesContainer);
         } else {
-            // Mensaje de error si no hay datos en localStorage
             diagnosisResult.textContent = 'No se encontraron resultados. Por favor, realiza un diagnóstico primero.';
         }
     </script>

@@ -44,7 +44,6 @@ async function loadSyntom() {
 
         symptomsCount = symptoms.length; 
         symptomsList = Array(symptomsCount).fill(0);
-        console.log('Lista de síntomas:', symptomsList);
 
     } catch (error) {
         console.error('Error al cargar los síntomas:', error);
@@ -72,7 +71,6 @@ function addDisease(selectElement) {
 
             const diseaseIndex = parseInt(diseaseId) - 1;
             symptomsList[diseaseIndex] = 0; 
-            console.log('Lista de síntomas actualizada:', symptomsList);
         };
 
         diseaseItem.appendChild(removeButton);
@@ -80,7 +78,6 @@ function addDisease(selectElement) {
 
         const diseaseIndex = parseInt(diseaseId) - 1;
         symptomsList[diseaseIndex] = 1;
-        console.log('Lista de síntomas actualizada:', symptomsList);
 
         selectElement.selectedIndex = 0;
     }
@@ -137,7 +134,6 @@ async function sendSymptomsList() {
         }
 
         const result = await response.json();
-        console.log('Respuesta del servidor:', result);
 
         localStorage.setItem('predictedDisease', JSON.stringify(result.prediction));
 
@@ -154,13 +150,8 @@ async function sendSymptomsList() {
         }
 
         const medicines = await medicineResponse.json();
-        console.log('Medicamentos obtenidos:', medicines);
 
         localStorage.setItem('medicines', JSON.stringify(medicines));
-
-        medicines.forEach(medicine => {
-            console.log(`Nombre: ${medicine.nombre}, Stock: ${medicine.stock}`);
-        });
 
         window.location.href = "../diagnostico.html";
 
