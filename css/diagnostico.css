@@ -1,0 +1,15 @@
+.back-button {
+    width: 100%;
+    padding: 12px 0;
+    margin-top: 20px;
+    border-radius: 25px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: rgba(12, 184, 182, 0.91);
+    color: #ffffff;
+    transition: background-color 0.3s ease;
+}
+.-button:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}

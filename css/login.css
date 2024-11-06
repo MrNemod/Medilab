@@ -1,0 +1,80 @@
+
+body, html {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: url('../img/bg-banner.png') no-repeat fixed;
+    background-size: cover;
+    position: relative;
+}
+
+.bg-color {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+.login-container {
+    width: 350px;
+    margin: 80px auto;
+    background: rgba(245, 244, 246, 0.301);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    color: #ffffff;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+h1 {
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.login-form input[type="text"], .login-form input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    text-align: center;
+}
+
+.login-button {
+    width: 100%;
+    padding: 12px 0;
+    margin-top: 20px;
+    border-radius: 25px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: rgba(12, 184, 182, 0.91);
+    color: #ffffff;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+.back-button {
+    width: 100%;
+    padding: 12px 0;
+    margin-top: 20px;
+    border-radius: 25px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    transition: background-color 0.3s ease;
+}

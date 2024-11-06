@@ -100,12 +100,15 @@ function filterSymptoms() {
 
     filteredSymptoms.forEach(syntom => {
         const suggestionItem = document.createElement('div');
+        suggestionItem.classList.add('suggestion-item'); // Agregar la clase para aplicar el estilo de hover
         suggestionItem.textContent = syntom.nombre;
+        
         suggestionItem.onclick = function () {
             selectSymptom(syntom);
             input.value = '';
             suggestionsContainer.innerHTML = '';
         };
+
         suggestionsContainer.appendChild(suggestionItem);
     });
 }

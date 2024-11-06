@@ -4,40 +4,50 @@
     <meta charset="UTF-8">
     <title>Diagnóstico</title>
     <link rel="stylesheet" href="./css/chequeo.css">
+    <link rel="stylesheet" href="./css/diagnostico.css">
+
 </head>
 <body>
     <div class="container">
         <h1>Resultado del Diagnóstico</h1>
         <div id="diagnosis-result"></div> <!-- Aquí se mostrará la enfermedad y sus medicamentos -->
+        <button class="back-button" onclick="window.location.href='index.html'">Regresar al inicio</button>
     </div>
     <script>
         // Recuperar la enfermedad predicha y los medicamentos desde localStorage
         const predictedDisease = JSON.parse(localStorage.getItem('predictedDisease'));
         const medicines = JSON.parse(localStorage.getItem('medicines'));
-
+    
         // Seleccionar el elemento donde se mostrará el resultado
         const diagnosisResult = document.getElementById('diagnosis-result');
-
+    
         if (predictedDisease && medicines) {
             // Crear el elemento para mostrar la enfermedad
             const diseaseTitle = document.createElement('h2');
             diseaseTitle.textContent = `Enfermedad: ${predictedDisease}`;
             diagnosisResult.appendChild(diseaseTitle);
-
+    
             const medicinesContainer = document.createElement('div');
             medicinesContainer.classList.add('medicines-container');
-
+    
             medicines.forEach(medicine => {
                 const medicineItem = document.createElement('p');
                 medicineItem.textContent = `Nombre: ${medicine.nombre}, Stock: ${medicine.stock}`;
+                
+                // Cambiar el estilo si el stock es menor que 10
+                if (medicine.stock < 10) {
+                    medicineItem.style.color = 'red';  // Cambiar color de texto
+                    medicineItem.style.fontWeight = 'bold';  // Aumentar peso de la fuente
+                }
+                
                 medicinesContainer.appendChild(medicineItem);
             });
-
+    
             diagnosisResult.appendChild(medicinesContainer);
         } else {
             diagnosisResult.textContent = 'No se encontraron resultados. Por favor, realiza un diagnóstico primero.';
         }
     </script>
-    <script src="./js/sintomas.js"></script>
+        <script src="./js/sintomas.js"></script>
 </body>
 </html>

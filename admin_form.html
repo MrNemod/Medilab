@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Administrar Datos</title>
+    <link rel="stylesheet" href="./css/admin_form.css">
+</head>
+<body>
+    <div class="bg-color"></div>
+    <div class="container">
+        <h1>Administrar Datos</h1>
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('medicinas')">Medicinas</button>
+            <button class="tab-button" onclick="showTab('sintomas')">Síntomas</button>
+            <button class="tab-button" onclick="showTab('enfermedades')">Enfermedades</button>
+        </div>
+        
+        <!-- Formulario para Medicinas -->
+        <form id="medicinas" class="tab-content active" onsubmit="submitForm(event, 'medicinas')">
+            <input type="text" placeholder="Nombre de la Medicina" name="nombre" required>
+            <input type="number" placeholder="Stock" name="stock" required>
+            <button type="submit">Agregar Medicina</button>
+        </form>
+        
+        <!-- Formulario para Síntomas -->
+        <form id="sintomas" class="tab-content" onsubmit="submitForm(event, 'sintomas')">
+            <input type="text" placeholder="Nombre del Síntoma" name="nombre" required>
+            <input type="text" placeholder="Descripción" name="descripcion">
+            <input type="text" placeholder="Parte del Cuerpo" name="parte_del_cuerpo" required>
+            <button type="submit">Agregar Síntoma</button>
+        </form>
+        
+        <!-- Formulario para Enfermedades -->
+        <form id="enfermedades" class="tab-content" onsubmit="submitForm(event, 'enfermedades')">
+            <input type="text" placeholder="Nombre de la Enfermedad" name="nombre" required>
+            <textarea placeholder="Descripción" name="descripcion"></textarea>
+            <button type="submit">Agregar Enfermedad</button>
+        </form>
+    </div>
+
+    <script>
+        // Función para mostrar solo el formulario de la pestaña seleccionada
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+        }
+
+        // Función de envío del formulario a la API
+        function submitForm(event, type) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            fetch(`/add_${type}`, {
+                method: 'POST',
+                body: JSON.stringify(Object.fromEntries(formData)),
+                headers: { 'Content-Type': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    alert(type.charAt(0).toUpperCase() + type.slice(1) + " agregado exitosamente.");
+                    event.target.reset();
+                } else {
+                    alert("Hubo un error al agregar " + type);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

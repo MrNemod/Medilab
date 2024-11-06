@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,7 +10,7 @@
     <div class="container">
         <h1>Vigilar mis síntomas</h1>
         <div class="search-box">
-            <input type="text" placeholder="Buscar por ejemplo, dolor de cabeza" id="search-input" oninput="filterSymptoms()">
+            <input type="text" placeholder="Buscar por ejemplo: dolor de cabeza" id="search-input" oninput="filterSymptoms()">
             <button class="search-button">🔍</button>
             <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
         </div>
@@ -18,18 +19,34 @@
             Por favor, intente agregar más síntomas.
         </div>
         
-        <!-- Selección por parte del cuerpo -->
-        <div class="symptoms-select" id="symptoms-select">
+        <!-- Botón para mostrar la selección de síntomas -->
+        <div class="symptoms-toggle">
+            <button id="toggle-button" onclick="toggleSymptoms()">Selecciona una parte del cuerpo:</button>
+        </div>
+
+        <!-- Selección por parte del cuerpo, inicialmente oculta -->
+        <div class="symptoms-select" id="symptoms-select" style="display: none;">
             <h2>Selecciona una parte del cuerpo:</h2>
             <!-- Los selects se añadirán aquí dinámicamente -->
         </div>
 
         <div class="navigation">
-            <button class="back-button">Atrás</button>
+            <button class="back-button" onclick="window.location.href='index.html'">Atrás</button>
             <button class="next-button">Siguiente</button>
         </div>
     </div>
 
     <script src="./js/sintomas.js"></script>
+    <script>
+        // Función para mostrar/ocultar la lista de selección de síntomas
+        function toggleSymptoms() {
+            var symptomsSelect = document.getElementById('symptoms-select');
+            if (symptomsSelect.style.display === 'none') {
+                symptomsSelect.style.display = 'block';
+            } else {
+                symptomsSelect.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
